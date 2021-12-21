@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Create Account
+        </title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <!-- Font imports -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+		<!-- custom styling import -->
+		<link rel="stylesheet" href="css/styles.css"> <!-- GENERAL STYLING -->
+		<link rel="stylesheet" href="css/createAccount.css"> <!-- Page specific STYLING -->
+    </head>
+    <body>
+    	
+    	<!-- Navigation bar -->
+    	<div class="navBar">
+    		SoCal
+    	</div>
+    	<!-- Spacer - NEEDED FOR ALL PAGES -->
+    	<div class="navBarSpacer"></div>
+
+    	<!-- Footer bar -->
+    	<div class="footer">
+    		<div class="footerIconContainer homeIconContainer">
+    			<img class="iconImage" src="images/icons/calendar.png" />
+    		</div>
+    		<div class="footerIconContainer chatIconContainer">
+    				<img class="iconImage" src="images/icons/chat.png" />
+    		</div>
+    		<div class="footerIconContainer profileIconContainer">
+    				<img class="iconImage" src="images/icons/profile.png" />
+    		</div>
+    	</div>
+
+    	<!-- Page specific content starts here! -->
+
+        <h1>Create a new account!</h1>
+        <form id="createAccountForm" action="createAccount" method="GET">
+        	
+        	<!-- First name -->
+        	<div class="form-group">
+            <label for="fnameInput">First name</label>
+            <input type="text" name="fname" class="form-control" id="fnameInput" placeholder="First Name" required>
+            </div>
+        	
+        	<!-- Last name -->
+        	<div class="form-group">
+            <label for="lnameInput">Last name</label>
+            <input type="text" name="lname" class="form-control" id="lnameInput" placeholder="Last Name" required>
+            </div>
+        
+            <!-- Email -->
+            <div class="form-group">
+            <label for="emailInput">Email address</label>
+            <input type="email" name="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            
+            <!-- Password -->
+            <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Password" required>
+            </div>
+            
+            <!-- Account type specification -->
+            
+            <!-- Personal -->
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="accountTypeRadio" id="flexRadioDefault2" value="personal" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                Personal
+                </label>
+            </div>
+            <!-- Business -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="accountTypeRadio" id="flexRadioDefault1" value="business">
+                <label class="form-check-label" for="flexRadioDefault1">
+                Business
+                </label>
+            </div>
+            
+            <!-- submit button -->
+            <button type="submit" class="vButton">Submit</button>
+        </form>
+    </body>
+</html>

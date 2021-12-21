@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Default homepage</title>
+		
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <!-- Font imports -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+		<!-- custom styling import -->
+		<link rel="stylesheet" href="css/styles.css"> <!-- GENERAL STYLING -->
+		
+		<!-- import the javascript functions -->
+		<script src="js/functions.js?4"></script>
+		
+		<!-- CALENDAR -->
+		<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
+		<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+		<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+		<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> 
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+		<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+		<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+		<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+		<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+		
+		<!-- Camera imports -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+		<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+		
+	</head>
+	<body>
+	
+		<!-- Navigation bar -->
+    	<div class="navBar">
+    		SoCal
+    	</div>
+    	<!-- Spacer - NEEDED FOR ALL PAGES -->
+    	<div class="navBarSpacer"></div>
+
+    	<!-- Footer bar -->
+    	<div class="footer">
+    		<div class="footerIconContainer homeIconContainer">
+    			<a href="index.html"><img class="iconImage" src="images/icons/calendar.png" /></a>
+    		</div>
+    		<div class="footerIconContainer profileIconContainer">
+    			<a href="profile.jsp" id="profileLink"><img class="iconImage" src="images/icons/profile.png" /></a>
+    		</div>
+    		<div class="footerIconContainer cameraIconContainer">
+    			<a onclick="openScanner()"><img class="iconImage" src="images/icons/camera.png" /></a>
+    		</div>
+    		<div class="footerIconContainer qrIconContainer">
+    			<a onclick="openQR()"><img class="iconImage" src="images/icons/qr.png" /></a>
+    		</div>
+    		<div class="footerIconContainer mapIconContainer">
+    			<a href="map.html"><img class="iconImage" src="images/icons/map.png" /></a>
+    		</div>
+	    </div>
+	    
+	   	<hr>
+	    
+	    <!-- Displays the public events -->
+	    <div class="eventsContainer" style="overflow:auto;">
+	    
+		    <h2>Events</h2>
+		    
+		    <!-- Stores the public events -->
+		    <div id="events" style="margin-bottom:30px;"></div>
+	    
+	    </div>
+	    
+	    <hr style="clear:both;">
+	    
+	    <!-- Displays the requests for the user -->
+	    
+	    <h2 style="padding-left:15px;">Event Requests</h2>
+	    <div id="requests" style="padding-left:15px;"></div>
+	    
+	    <hr>
+	    
+	    <!-- Displays the personal calendar -->
+	    <div class="container" style="max-width:none !important;">
+		  <div class="row">
+		    <div class="col-xl">
+		      <h2>Personal Calendar</h2>
+		    </div>
+		    <div class="col-xl">
+		      	<!-- functionality buttons -->
+				<a class="vButton" style="margin-bottom:20px; cursor:pointer; float:right;" data-toggle="modal" data-target="#newSharedEventModal">Add shared event</a>
+				<a class="vButton" style="margin-bottom:20px; cursor:pointer; float:right;" data-toggle="modal" data-target="#newEventModal">Add new event</a>
+		    </div>
+		  </div>
+		</div>
+
+	    <!-- Calendar -->
+	    <div id="menu" class=".tui-full-calendar-dropdown-menu">
+	      <span id="menu-navi">
+	        <button type="button" class="btn btn-default btn-sm move-today" id="today-btn" data-action="move-today">Today</button>
+	        <button type="button" class="btn btn-default btn-sm move-day" id="left-arrow" data-action="move-prev">
+	          <i class="tui-full-calendar-icon tui-full-calendar-ic-arrow-left" data-action="move-prev"></i>
+	        </button>
+	        <button type="button" class="btn btn-default btn-sm move-day" id="right-arrow" data-action="move-next">
+	          <i class="tui-full-calendar-icon tui-full-calendar-ic-arrow-right" data-action="move-next"></i>
+	        </button>
+	      </span>
+	      <span id="renderRange" class="render-range"></span>
+	    </div>
+	
+	    <div id="calendar"></div>
+		
+		<!-- NEW EVENT MODAL -->
+		<div class="modal fade" id="newEventModal" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Add new event</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        
+		        <!-- inputs go here -->
+		        <label>Name:</label><br>
+		        <input id="newEventName" /><br>
+		        
+		        <label>Description:</label><br>
+		        <input id="newEventDesc" /><br>
+		        
+		        <label>Location:</label><br>
+		        <input id="newEventLoc" /><br>
+		        
+		        <label>Start:</label><br>
+		        <input id="newEventStart" /><br>
+		        
+		        <label>End:</label><br>
+		        <input id="newEventEnd" /><br>
+		        
+		      </div>
+		      <div class="modal-footer">
+		     	<a class="vButton" onclick="addNewEvent();" data-dismiss="modal">Add</a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- NEW SHARED EVENT MODAL -->
+		<div class="modal fade" id="newSharedEventModal" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Add new event</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        
+		        <!-- inputs go here -->
+		        <label>Name:</label><br>
+		        <input id="newSharedEventName" /><br>
+		        
+		        <label>Description:</label><br>
+		        <input id="newSharedEventDesc" /><br>
+		        
+		        <label>Friend Email:</label><br>
+		        <input id="newSharedEventEmail" /><br>
+		        
+		        <label>Location:</label><br>
+		        <input id="newSharedEventLoc" /><br>
+		        
+		        <label>Start:</label><br>
+		        <input id="newSharedEventStart" /><br>
+		        
+		        <label>End:</label><br>
+		        <input id="newSharedEventEnd" /><br>
+		        
+		      </div>
+		      <div class="modal-footer">
+		     	<a class="vButton" onclick="addNewSharedEvent();" data-dismiss="modal">Add</a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Accept / Decline Modal -->
+		<div id="sharedNotificationModal" class="modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Shared Event Request</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        	<a id="acceptButton" class="vButton">Accept</a>
+		        	<a id="declineButton" class="vButton">Decline</a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- QR Code scanner Modal -->
+		<div id="qrModal" class="modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">QR Code Scanner</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<video id="preview" width="100%"></video>
+		      	<div class="col-md-6">
+					<label>Scan QR Code</label>
+					<input type="text" name="text" id="text" readonyy="" placeholder="scan qrcode" class="form-control">
+				</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- User QR Code Modal -->
+		 <div id="qrUserModal" class="modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">My QR Code</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<div class="col-md-6">
+		      		<!-- dynamically set qr code image in js (inside of getInitData) -->
+					<img id="userQRCodeImage" src="" />
+				</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+	</body>
+	<script>
+	
+		//initializes new client socket
+		var webSocket = new WebSocket("ws://localhost:8080/SoCal/endpoint");
+		
+		//stores the email
+		var email = getCookie("email");
+		
+		//random idea: when sending friend request, server will send out a message containing the email, check if this email matches for live update!
+		
+		webSocket.onmessage = function(message){
+			
+			//outputs the message from the server
+			console.log("from server: " + message.data);
+			
+			var messageData = JSON.parse((message.data));
+			
+			console.log(messageData);
+			
+			var messageKey = Object.keys(messageData)[0];
+			
+			console.log(messageKey);
+			
+			//if the server sent back a list of requests
+			if(messageKey == "gotRequests"){
+				
+				//store the accept and decline buttons
+				var requestButtons = "";
+				
+				//loop through the requests and build the accept and decline buttons
+				var requests = messageData["gotRequests"];
+				
+				console.log(requests);
+				
+				const keys = Object.keys(requests);
+				
+				keys.forEach(function (item, index) {
+					var eventData = JSON.parse(requests[item]);
+					console.log(item)
+					console.log(eventData);
+					//<a id="acceptButton" class="vButton">Accept</a>
+					requestButtons += "<div style='padding-bottom:15px;'>";
+					requestButtons += eventData["email"] + ": ";
+					requestButtons += "<a class='vButton' onclick='respond(" + '"' + "accept" + '","' + item + '"' + ")'>Accept</a>";
+					requestButtons += "<a class='vButton' onclick='respond(" + '"' + "decline" + '","' + item + '"' + ")'>Decline</a>";
+					requestButtons += "</div>";
+				});
+				
+				//create the buttons
+				document.getElementById("requests").innerHTML = requestButtons;
+				
+			}
+			
+			//general refresh function
+			if(messageKey == "genRefresh"){
+				console.log("GENERAL REFRESH!");
+				getInitData("Home");
+			}
+			
+			//when a personal event is added
+			if(messageKey == "addEvent"){
+				//refreshes the data on the page
+				getInitData("Home");
+			}
+			
+			//when a shared event is added
+			if(messageKey == "addSharedEvent"){
+				
+				var sharedEventData = JSON.parse(messageData["addSharedEvent"]);
+				
+				//get the email of the friend
+				var friendEmail = sharedEventData[0];
+				var key = sharedEventData[1];
+				console.log("friendEmail: " + friendEmail);
+				console.log("key: " + key);
+				
+				//check if client matches
+				if(friendEmail == email){
+					
+					console.log("THIS BROWSER NEEDS A POP UP");
+					
+					//open the pop up
+					//openPopup(key);
+					
+					//get the requests waiting
+					var data = {};
+							
+					data["function"] = "getRequests";
+					data["data"] = {};
+					data["data"]["email"] = getCookie("email");
+					
+					var jsonString = JSON.stringify(data);
+							
+					console.log(jsonString);
+					
+					//send the data to the socket
+					webSocket.send(jsonString);
+					
+				}
+			}
+			
+		}
+		
+		//open the users qr code
+		function openQR(){
+			//show the modal
+			$('#qrUserModal').modal('show');
+		}
+		
+		//open the qr code scanner
+		function openScanner(){
+			
+			//show the modal
+			$('#qrModal').modal('show');
+			
+			//run script
+			let scanner=new Instascan.Scanner({video:document.getElementById('preview')});
+			Instascan.Camera.getCameras().then(function(cameras){
+				if(cameras.length>0){
+					scanner.start(cameras[0]);
+				}else{
+					alert('No cameras found');
+				}
+			}).catch(function(e){ 
+				console.error(e);
+			});
+			scanner.addListener('scan',function(servletURL){
+				
+				document.getElementById('text').value=servletURL;
+						
+				var servletURLFinal = servletURL + "&email=" + getCookie("email");
+				
+				console.log("servletURLFinal: " + servletURLFinal);
+				
+				//now the get call will have the friendId and the email of the user scanning it
+				
+				//get call
+				var xhttp = new XMLHttpRequest();
+				
+				//on success, fill out the front end!
+				xhttp.onload = function() {
+					
+					console.log(this.responseText);
+					
+				};
+				
+				//GET call the servlet with the specified parameters
+				xhttp.open("GET", servletURLFinal, true);
+				xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xhttp.send();
+			});
+		}
+		
+		//open the accept/decline popup
+		function openPopup(key){
+			
+			//show the modal
+			$('#sharedNotificationModal').modal('show');
+			
+			//set the onclicks for the modal
+			document.getElementById("acceptButton").onclick = function(){
+				respond("accept", key);
+			};
+			document.getElementById("declineButton").onclick = function(){
+				respond("decline", key);
+			};
+		}
+		
+		//accept or decline the request
+		function respond(answer, key){
+			
+			console.log("calling respond: " + answer + ", " + key);
+			
+			var accept = -1; //garbage value
+			
+			console.log("accept value: " + accept);
+			
+			if(answer == "accept"){
+				console.log("accept the reqest for users " + key);
+				accept = true;
+			} else {
+				console.log("decline the reqest for users " + key);
+				accept = false;
+			}
+			
+			console.log("accept value: " + accept);
+			
+			var data = {};
+			
+			data["function"] = "handleSharedRequest";
+			data["data"] = {};
+			data["data"]["accept"] = accept;
+			data["data"]["users"] = key;
+			
+			var jsonString = JSON.stringify(data);
+			
+			console.log(jsonString);
+			
+			//send the data to the socket
+			webSocket.send(jsonString);
+			
+			getInitData("Home");
+		}
+		
+		//the modal contains a form with the needed fields
+		//on submission, convert to json and send the message to the server
+		function addNewEvent(){
+			
+			//gets the data from the form
+			var name = document.getElementById("newEventName").value;
+			var description = document.getElementById("newEventDesc").value;
+			var location = document.getElementById("newEventLoc").value;
+			var start = document.getElementById("newEventStart").value;
+			var end = document.getElementById("newEventEnd").value;
+			var email = getCookie("email");
+			
+			//construct the json object to be sent to the socket
+			
+			var functionName = "addEvent";
+			
+			var data = {};
+			
+			data["function"] = functionName;
+			data["data"] = {};
+			data["data"]["email"] = email;
+			data["data"]["name"] = name;
+			data["data"]["description"] = description;
+			data["data"]["location"] = location;
+			data["data"]["start_time"] = start;
+			data["data"]["end_time"] = end;
+			
+			var jsonString = JSON.stringify(data);
+			
+			console.log(jsonString);
+			
+			//send the data to the socket
+			webSocket.send(jsonString);
+			
+		}
+		
+		//adds a new shared event
+		function addNewSharedEvent(){
+			
+			//gets the data from the form
+			var name = document.getElementById("newSharedEventName").value;
+			var friendEmail = document.getElementById("newSharedEventEmail").value;
+			var description = document.getElementById("newSharedEventDesc").value;
+			var location = document.getElementById("newSharedEventLoc").value;
+			var start = document.getElementById("newSharedEventStart").value;
+			var end = document.getElementById("newSharedEventEnd").value;
+			var email = getCookie("email");
+			
+			//construct the json object to be sent to the socket
+			
+			var functionName = "addSharedEvent";
+			
+			var data = {};
+			
+			data["function"] = functionName;
+			data["data"] = {};
+			data["data"]["email"] = email;
+			data["data"]["friendEmail"] = friendEmail;
+			data["data"]["name"] = name;
+			data["data"]["description"] = description;
+			data["data"]["location"] = location;
+			data["data"]["start_time"] = start;
+			data["data"]["end_time"] = end;
+			
+			var jsonString = JSON.stringify(data);
+			
+			console.log(jsonString);
+			
+			//send the data to the socket
+			webSocket.send(jsonString);
+			
+		}
+		
+		//calendar JS
+		var cal = new tui.Calendar('#calendar', {
+        	defaultView: 'week', // weekly view option
+        	taskView: true,
+        	useCreationPopup: false,
+        	useDetailPopup: true,
+        	template: {
+                milestone: function(schedule) {
+                    return '<span style="color:red;"><i class="fa fa-flag"></i> ' + schedule.title + '</span>';
+                },
+                milestoneTitle: function() {
+                    return 'MILESTONE';
+                },
+                task: function(schedule) {
+                    return '&nbsp;&nbsp;#' + schedule.title;
+                },
+                taskTitle: function() {
+                    return 'TASK';
+                },
+                allday: function(schedule) {
+                    return schedule.title + ' <i class="fa fa-refresh"></i>';
+                },
+                alldayTitle: function() {
+                    return 'ALL DAY';
+                },
+                time: function(schedule) {
+                    return schedule.title + ' <i class="fa fa-refresh"></i><br>' + schedule.start.toUTCString();
+                },
+                weekDayname: function(model) {
+                    return '<span class="tui-full-calendar-dayname-date">' + model.date + '</span>&nbsp;&nbsp;<span class="tui-full-calendar-dayname-name">' + model.dayName + '</span>';
+                },
+                weekGridFooterExceed: function(hiddenSchedules) {
+                    return '+' + hiddenSchedules;
+                }
+            },
+            month: {
+                daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                startDayOfWeek: 0,
+                narrowWeekend: false
+            },
+            week: {
+                daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                startDayOfWeek: 0,
+                narrowWeekend: false
+            }
+      	});
+		
+    	document.querySelector("#today-btn").onclick=function() {
+    		cal.today();
+    	}
+    	document.querySelector("#left-arrow").onclick = function() {
+    		cal.prev();	
+    	}
+    	document.querySelector("#right-arrow").onclick = function() {
+    		cal.next();
+    	}
+    	
+		//gets the data from sql and inserts it into the html page
+		getInitData("Home");
+		
+	</script>
+</html>

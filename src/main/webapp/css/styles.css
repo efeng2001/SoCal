@@ -1,0 +1,72 @@
+body{
+	font-family: 'Montserrat', sans-serif;
+	padding-bottom:200px;
+	min-height:900px;
+}
+
+/* 
+
+Color references 
+red: #a31833;
+yellow: #ffc651;
+
+*/
+
+/* navbar styling */
+.navBar{
+	z-index:10000;
+	width: 100%;
+	background-color: #a31833; /* red color */
+	text-align: center;
+	font-size: 30px;
+	color: white;
+	position: fixed;
+	top: 0;
+}
+
+.navBarSpacer{
+	height: 60px;
+}
+
+/* footer styling */
+.footer{
+	position: fixed;
+	z-index:100000;
+	bottom: 0;
+	width:100%;
+	background-color: #a31833; /* red color */
+	color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.footerIconContainer{
+	width: 20%;
+	float:left;
+	text-align:center;
+}
+
+.iconImage{
+	height:40px;
+	cursor:pointer;
+}
+
+/* generic button, apply to any button for default styling */
+.vButton{
+	background-color: #a31833;
+	padding: 5px 30px;
+	color: white;
+	border: none;
+	border-radius: 50px;
+	cursor:pointer;
+}
+
+.modal-open .modal{
+	z-index:10000 !important;
+}
+
+/* homepage */
+.eventsContainer{
+	padding-left:15px;
+}
+
